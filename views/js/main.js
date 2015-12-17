@@ -452,7 +452,8 @@ var resizePizzas = function(size) {
   // CHANGED: moved lines determining dx and newwidth out of loop as they are the same
   // for all pizzas
 
-  // create array of pizzas
+  // ****************CHANGED: Used code mentioned in lesson to create array of pizzas
+  //create array of pizzas
   function getDomNodeArray(selector) {
     // get the elements as a DOM collection
     var elemCollection = document.querySelectorAll(selector);
@@ -466,6 +467,7 @@ var resizePizzas = function(size) {
   var pizzas = getDomNodeArray('.randomPizzaContainer');
 
   function changePizzaSizes(size) {
+    //****************CHANGED: Moved dx and newwidth lines out of the loop
     var dx = determineDx(document.querySelector(".randomPizzaContainer"), size);
     var newwidth = (document.querySelector(".randomPizzaContainer").offsetWidth + dx) + 'px';
     for (var i = 0; i < pizzas.length; i++) {
@@ -485,11 +487,12 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
-// moved pizzaDiv assignment out of loop
+//****************CHANGED: moved pizzaDiv assignment out of loop
 var pizzasDiv = document.getElementById("randomPizzas");
 for (var i = 2; i < 100; i++) {
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
+
 
 // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
 window.performance.mark("mark_end_generating");
@@ -515,6 +518,8 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
 // Generates the sliding pizzas when the page loads.
+
+//****************CHANGED: swapped queryselection for getElement selection where possible
 var items = [];
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
@@ -525,28 +530,32 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
+    //************CHANGED: set initial position of movers to 0
+    elem.style.left = '0';
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    document.getElementById("movingPizzas1").appendChild(elem);
   }
-  items = document.querySelectorAll('.mover');
+  items = document.getElementsByClassName('mover');
   updatePositions();
 
 });
 
 
 // Moves the sliding background pizzas based on scroll position
-
+var centerLine = (window.innerWidth / 2);
 
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
+  //****************CHANGED: moved scrollTop out of loop
   var scrolled = document.body.scrollTop;
 
   console.log('# of pizzas: ' +items.length);
   for (var i = 0; i < items.length; i++) {
     var phase = Math.sin((scrolled / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    var translateX = items[i].basicLeft + 100 * phase + 'px';
+    items[i].style.transform = 'translateX(' + translateX +')';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
