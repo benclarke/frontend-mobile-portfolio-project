@@ -1,0 +1,25 @@
+{
+  "name": "frontend-nanodegree-mobile-portfolio",
+  "version": "1.0.0",
+  "description": "website optimizing proj",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp-gzip": "^1.2.0",
+    "gulp-minify-css": "^1.2.2",
+    "gulp-minify-html": "^1.0.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/udacity/frontend-nanodegree-mobile-portfolio.git"
+  },
+  "author": "Ben Upham",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/udacity/frontend-nanodegree-mobile-portfolio/issues"
+  },
+  "homepage": "https://github.com/udacity/frontend-nanodegree-mobile-portfolio#readme"
+}
