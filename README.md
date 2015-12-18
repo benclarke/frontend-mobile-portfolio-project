@@ -1,14 +1,24 @@
-## Optimization of Portfolio
+## Frontend Mobile Portfolio Project
 
-###Steps Taken
+The Frontend Mobile Portfolio is a mobile portfolio page template with links to various dummy project pages.
+The portfolio and Pizzeria subpage have been optimized for performance and page speed
+utilizing various compression and js refactoring strategies.
+
+###How to Use
+
+To view or edit the portfolio site for yourself, download the zip file from my github,
+https://github.com/benclarke/frontend-mobile-portfolio-project (click "Download ZIP"). Unzip the files and
+click on index.html to open it in a browser.
+
+###Optimization Steps Taken
 
 ####index.html:
 1. Compressed and inlined both CSS files (styles and print)
 2. Compressed and resized Pizzeria image
 3. Removed comments from HTML
 
-####Pizzas main.js and css file
-line no.
+####Pizzas main.js
+Numbers below refer to line no. in views/js/main.js.
 *    404: added "use strict" (no performance diff.)
 *    434 (and elsewhere I may have missed): Swapped querySelector with getElement method(s) for speed
 *    464-485: Created array of pizza DOM elements, move dx function call and definition of newwidth var outside loop, used pizza array[0] in dx function call, but not newwidth (had no performance impact in that case).
