@@ -18,6 +18,9 @@ cameron *at* udacity *dot* com
 
 // As you may have realized, this website randomly generates pizzas.
 // Here are arrays of all possible pizza ingredients.
+
+
+
 var pizzaIngredients = {};
 pizzaIngredients.meats = [
   "Pepperoni",
@@ -398,6 +401,9 @@ var pizzaElementGenerator = function(i) {
   return pizzaContainer;
 };
 
+"use strict";
+
+
 // resizePizzas(size) is called when the slider in the "Our Pizzas" section of the website moves.
 var resizePizzas = function(size) {
   window.performance.mark("mark_start_resize");   // User Timing API function
@@ -422,9 +428,10 @@ var resizePizzas = function(size) {
   changeSliderLabel(size);
 
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
+  //****************CHANGED: switched from queryselection method to getElement method
   function determineDx (elem, size) {
     var oldWidth = elem.offsetWidth;
-    var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
+    var windowWidth = document.getElementById("randomPizzas").offsetWidth;
     var oldSize = oldWidth / windowWidth;
 
     // TODO: change to 3 sizes? no more xl?
@@ -449,8 +456,6 @@ var resizePizzas = function(size) {
   }
 
   // Iterates through pizza elements on the page and changes their widths
-  // CHANGED: moved lines determining dx and newwidth out of loop as they are the same
-  // for all pizzas
 
   // ****************CHANGED: Used code mentioned in lesson to create array of pizzas
   //create array of pizzas
@@ -468,8 +473,12 @@ var resizePizzas = function(size) {
 
   function changePizzaSizes(size) {
     //****************CHANGED: Moved dx and newwidth lines out of the loop
-    var dx = determineDx(document.querySelector(".randomPizzaContainer"), size);
-    var newwidth = (document.querySelector(".randomPizzaContainer").offsetWidth + dx) + 'px';
+    //****************CHANGED: Swapped out one of the document.getElements for the pizzas array
+    //("var dx = ") but not the second one ("var newwidth =") because it slowed it down for some reason
+    //****************CHANGED: moved lines determining dx and newwidth out of loop as they are the same
+    // for all pizzas
+    var dx = determineDx(pizzas[0], size);
+    var newwidth = (document.getElementsByClassName("randomPizzaContainer")[0].offsetWidth + dx) + 'px';
     for (var i = 0; i < pizzas.length; i++) {
       pizzas[i].style.width = newwidth;
     }
@@ -520,12 +529,21 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // Generates the sliding pizzas when the page loads.
 
 //****************CHANGED: swapped queryselection for getElement selection where possible
+//********************************CHANGED: reduced pizza numbers to minimum for screen size by
+//calculating rows necessary
+//****************CHaNGED: moved var creation "elem" out of the loop
+//****************CHANGED: moved and made variable of movingPizzas1
 var items = [];
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
-    var elem = document.createElement('img');
+  var rows = Math.floor(window.screen.height / s);
+  var totalPizzas = cols * rows;
+  var elem;
+  var movingPizzas = document.getElementById("movingPizzas1");
+
+  for (var i = 0; i < totalPizzas; i++) {
+    elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
@@ -534,7 +552,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.left = '0';
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.getElementById("movingPizzas1").appendChild(elem);
+    movingPizzas.appendChild(elem);
   }
   items = document.getElementsByClassName('mover');
   updatePositions();
@@ -555,6 +573,7 @@ function updatePositions() {
   for (var i = 0; i < items.length; i++) {
     var phase = Math.sin((scrolled / 1250) + (i % 5));
     var translateX = items[i].basicLeft + 100 * phase + 'px';
+    //****************CHANGED: switched from style.left to style.transform
     items[i].style.transform = 'translateX(' + translateX +')';
   }
 

@@ -21,6 +21,6 @@ gulp.task('pizzaimage', function() {
 gulp.task('minify', function() {
 	return gulp.src('css/*.css')
 	.pipe(miniCss({compatibility: 'ie9'}))
-	.pipe(gzip())
+	// .pipe(gzip())
 	.pipe(gulp.dest('dist/css'))
 })
